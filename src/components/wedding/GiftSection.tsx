@@ -8,14 +8,14 @@ const gifts = [
     title: "Bank Transfer",
     bank: "Bank Central Asia (BCA)",
     account: "1234567890",
-    name: "Amanda & Jonathan",
+    name: "Anthon & Melisa",
   },
   {
     icon: Wallet,
     title: "Digital Wallet",
     bank: "GoPay",
     account: "081234567890",
-    name: "Amanda",
+    name: "Anthon",
   },
 ];
 

@@ -2,12 +2,12 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ChatBubble from "./ChatBubble";
 
 const messages = [
-  { name: "Amanda", message: "Hey! Nice talking with you in the group 😊", isRight: false },
-  { name: "Jonathan", message: "Same here! You seem really cool", isRight: true },
-  { name: "Amanda", message: "Haha thanks! So what do you do?", isRight: false },
-  { name: "Jonathan", message: "I'm in tech. You?", isRight: true },
-  { name: "Amanda", message: "Design! We should chat more 🎨", isRight: false },
-  { name: "Jonathan", message: "I'd love that 😊", isRight: true },
+  { name: "Anthon", message: "Hey! Nice talking with you in the group 😊", isRight: false },
+  { name: "Melisa", message: "Same here! You seem really cool", isRight: true },
+  { name: "Anthon", message: "Haha thanks! So what do you do?", isRight: false },
+  { name: "Melisa", message: "I'm in tech. You?", isRight: true },
+  { name: "Anthon", message: "Design! We should chat more 🎨", isRight: false },
+  { name: "Melisa", message: "I'd love that 😊", isRight: true },
 ];
 
 const FirstConversationSection = () => {

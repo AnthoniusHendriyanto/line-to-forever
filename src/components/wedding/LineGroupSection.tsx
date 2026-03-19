@@ -2,12 +2,12 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ChatBubble from "./ChatBubble";
 
 const messages = [
-  { name: "Amanda", message: "Hi everyone 👋", isRight: false },
-  { name: "Jonathan", message: "Hello!", isRight: true },
+  { name: "Anthon", message: "Hi everyone 👋", isRight: false },
+  { name: "Melisa", message: "Hello!", isRight: true },
   { name: "Sarah", message: "Welcome to the group! 🎉", isRight: false },
   { name: "Michael", message: "Nice to meet you all!", isRight: false },
-  { name: "Amanda", message: "Looking forward to getting to know everyone 😊", isRight: false },
-  { name: "Jonathan", message: "Same here! This is great", isRight: true },
+  { name: "Anthon", message: "Looking forward to getting to know everyone 😊", isRight: false },
+  { name: "Melisa", message: "Same here! This is great", isRight: true },
 ];
 
 const LineGroupSection = () => {

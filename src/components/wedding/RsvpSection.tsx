@@ -1,138 +1,73 @@
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Check, Download, Mail } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
-import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
+import { Check, Mail } from "lucide-react";
+import { useInvitationLanguage } from "./InvitationLanguage";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { isValidEmail } from "@/lib/validation";
 
 const RsvpSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { t } = useInvitationLanguage();
+  const [errorMessage, setErrorMessage] = useState<"rsvpInvalid" | null>(null);
   const [form, setForm] = useState({ name: "", email: "", attending: true, guests: 1, message: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [qrCodeId, setQrCodeId] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    // Generate a unique QR ID if attending
-    const uniqueId = crypto.randomUUID();
-    
-    try {
-      const { error } = await supabase.from("guests").insert([
-        {
-          name: form.name,
-          email: form.email,
-          guests_count: form.attending ? form.guests : 0,
-          message: form.message,
-          qr_code_id: uniqueId,
-          is_checked_in: false,
-        },
-      ]);
-
-      if (error) throw error;
-
-      setQrCodeId(uniqueId);
-      setSubmitted(true);
-      toast.success("RSVP Sent Successfully!");
-    } catch (error: any) {
-      console.error("Error submitting RSVP:", error);
-      toast.error(error.message || "Failed to submit RSVP. Please try again.");
-    } finally {
-      setLoading(false);
+    setErrorMessage(null);
+    if (!form.name.trim() || !isValidEmail(form.email) || !Number.isInteger(form.guests) || form.guests < 1 || form.guests > 5) {
+      setErrorMessage("rsvpInvalid");
+      return;
     }
-  };
-
-  const downloadQR = () => {
-    const svg = document.getElementById("qr-code-svg");
-    if (!svg) return;
-    
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      if (ctx) {
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-        const pngFile = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement("a");
-        downloadLink.download = `QR-Wedding-${form.name}.png`;
-        downloadLink.href = pngFile;
-        downloadLink.click();
-      }
-    };
-    
-    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+    setSubmitted(true);
   };
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-secondary/30">
+    <section id="rsvp" className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-secondary/30">
       <div ref={ref} className={`w-full max-w-sm scroll-fade-in ${isVisible ? "visible" : ""}`}>
         <p className="text-xs tracking-[0.4em] uppercase text-primary mb-4 font-sans-body text-center">
-          We Hope You Can Make It
+          {t.rsvpEyebrow}
         </p>
-        <h2 className="text-2xl font-serif text-foreground mb-8 text-center">{submitted ? "Your QR Ticket" : "RSVP"}</h2>
+        <h2 className="text-2xl font-serif text-foreground mb-8 text-center">{submitted ? t.replyTitle : t.rsvp}</h2>
 
         {submitted ? (
-          <div className="bg-card rounded-2xl p-8 border border-border text-center shadow-xl animate-in fade-in zoom-in duration-500">
+          <div role="status" className="bg-card rounded-2xl p-8 border border-border text-center shadow-xl animate-in fade-in zoom-in duration-500">
             <div className="w-12 h-12 rounded-full bg-line-green/10 flex items-center justify-center mx-auto mb-4">
               <Check className="w-6 h-6 text-line-green" />
             </div>
-            <h3 className="font-serif text-xl text-foreground mb-2">Thank You, {form.name}!</h3>
-            <p className="text-muted-foreground text-sm font-sans-body mb-8">
-              We've registered your RSVP. Please save this QR code for check-in at the venue.
+            <h3 className="font-serif text-xl text-foreground mb-2">{t.thanks.replace("{name}", form.name.trim())}</h3>
+            <p className="text-muted-foreground text-sm font-sans-body">
+              {t.rsvpSoon}
             </p>
-            
-            <div className="bg-white p-6 rounded-2xl inline-block mb-8 shadow-sm border border-border/50">
-              <QRCodeSVG 
-                id="qr-code-svg"
-                value={qrCodeId} 
-                size={200}
-                level="H"
-                includeMargin={true}
-              />
-            </div>
-
-            <div className="space-y-3">
-              <button
-                onClick={downloadQR}
-                className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 rounded-xl text-sm font-sans-body font-semibold hover:opacity-90 transition-opacity shadow-md"
-              >
-                <Download className="w-4 h-4" />
-                Download Ticket
-              </button>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-4">
-                ID: {qrCodeId.slice(0, 8)}...
-              </p>
-            </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-card rounded-2xl p-6 border border-border space-y-5 shadow-lg">
+          <form onSubmit={handleSubmit} className="bg-card rounded-2xl p-6 border border-border shadow-lg">
+            <div className="space-y-5 min-w-0">
             <div>
-              <label className="text-sm font-sans-body text-muted-foreground block mb-1.5">Your Name</label>
+              <label htmlFor="rsvp-name" className="text-sm font-sans-body text-muted-foreground block mb-1.5">{t.name}</label>
               <input
                 type="text"
+                id="rsvp-name"
+                autoComplete="name"
+                maxLength={120}
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground font-sans-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
-                placeholder="Enter your name"
+                placeholder={t.nameHint}
               />
             </div>
 
             <div>
-              <label className="text-sm font-sans-body text-muted-foreground block mb-1.5 flex items-center gap-2">
+              <label htmlFor="rsvp-email" className="text-sm font-sans-body text-muted-foreground block mb-1.5 flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5" />
-                Email Address
+                {t.email}
               </label>
               <input
                 type="email"
+                id="rsvp-email"
+                autoComplete="email"
+                maxLength={254}
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -142,12 +77,13 @@ const RsvpSection = () => {
             </div>
 
             <div>
-              <label className="text-sm font-sans-body text-muted-foreground block mb-2">Will you attend?</label>
-              <div className="flex gap-3">
+              <p id="attendance-label" className="text-sm font-sans-body text-muted-foreground block mb-2">{t.attendance}</p>
+              <div className="flex gap-3" role="group" aria-labelledby="attendance-label">
                 {[true, false].map((val) => (
                   <button
                     key={String(val)}
                     type="button"
+                    aria-pressed={form.attending === val}
                     onClick={() => setForm({ ...form, attending: val })}
                     className={`flex-1 py-3 rounded-xl text-sm font-sans-body font-medium transition-all ${
                       form.attending === val
@@ -155,7 +91,7 @@ const RsvpSection = () => {
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    {val ? "Joyfully Accept" : "Regretfully Decline"}
+                    {val ? t.accept : t.decline}
                   </button>
                 ))}
               </div>
@@ -163,41 +99,52 @@ const RsvpSection = () => {
 
             {form.attending && (
               <div className="animate-in slide-in-from-top-2 duration-300">
-                <label className="text-sm font-sans-body text-muted-foreground block mb-1.5">
-                  Number of Guests
-                </label>
-                <select
-                  value={form.guests}
-                  onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground font-sans-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all cursor-pointer"
+                <p id="rsvp-guests-label" className="text-sm font-sans-body text-muted-foreground block mb-1.5">
+                  {t.guests}
+                </p>
+                <Select
+                  value={String(form.guests)}
+                  onValueChange={(guests) => setForm({ ...form, guests: Number(guests) })}
                 >
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <option key={n} value={n}>{n} {n === 1 ? 'Person' : 'People'}</option>
-                  ))}
-                </select>
+                  <SelectTrigger
+                    id="rsvp-guests"
+                    aria-labelledby="rsvp-guests-label"
+                    className="h-auto w-full rounded-xl border-border px-4 py-3 font-sans-body text-sm text-foreground focus:ring-primary/30 focus:ring-offset-0"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <SelectItem key={n} value={String(n)}>{n} {n === 1 ? t.person : t.people}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             )}
 
             <div>
-              <label className="text-sm font-sans-body text-muted-foreground block mb-1.5">
-                Message for the Couple
+              <label htmlFor="rsvp-message" className="text-sm font-sans-body text-muted-foreground block mb-1.5">
+                {t.message}
               </label>
               <textarea
+                id="rsvp-message"
+                maxLength={2000}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground font-sans-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none transition-all"
-                placeholder="Write your wishes..."
+                placeholder={t.messageHint}
               />
             </div>
 
+            {errorMessage && <p role="alert" className="text-sm text-destructive">{t[errorMessage]}</p>}
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-primary text-primary-foreground py-4 rounded-xl text-sm font-sans-body font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+              className="w-full bg-primary text-primary-foreground py-4 rounded-xl text-sm font-sans-body font-semibold hover:opacity-90 transition-opacity shadow-md"
             >
-              {loading ? "Sending RSVP..." : "Send RSVP"}
+              {t.send}
             </button>
+            </div>
           </form>
         )}
       </div>
@@ -206,4 +153,3 @@ const RsvpSection = () => {
 };
 
 export default RsvpSection;
-

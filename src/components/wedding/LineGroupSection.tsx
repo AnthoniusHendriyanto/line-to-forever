@@ -1,5 +1,7 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ChatBubble from "./ChatBubble";
+import { Users } from "lucide-react";
+import { useInvitationLanguage } from "./InvitationLanguage";
 
 const messages = [
   { name: "Anthon", message: "Hi everyone 👋", isRight: false },
@@ -12,36 +14,34 @@ const messages = [
 
 const LineGroupSection = () => {
   const { ref, isVisible } = useScrollAnimation(0.15);
+  const { t } = useInvitationLanguage();
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-4 py-16">
       <div ref={ref} className={`w-full max-w-sm scroll-fade-in ${isVisible ? "visible" : ""}`}>
         <p className="text-xs tracking-[0.4em] uppercase text-primary mb-4 font-sans-body text-center">
-          Where It Started
+          {t.groupEyebrow}
         </p>
-        <h2 className="text-2xl font-serif text-foreground mb-8 text-center">A Random LINE Group</h2>
+        <h2 className="text-2xl font-serif text-foreground mb-8 text-center">{t.groupTitle}</h2>
 
         {/* Chat container */}
-        <div className="bg-[hsl(148_30%_95%)] rounded-2xl p-4 border border-line-green/20">
-          <div className="text-center mb-4">
-            <div className="bg-line-green/10 text-line-green text-[10px] px-3 py-1 rounded-full inline-block font-sans-body">
-              LINE Group Chat
-            </div>
+        <div className="invitation-chat rounded-2xl p-4 border border-line-green/20">
+          <div className="invitation-chat-heading">
+            <Users size={17} aria-hidden="true" /><span>{t.groupChat}</span><span aria-hidden="true">···</span>
           </div>
           {messages.map((msg, i) => (
             <ChatBubble
               key={i}
               {...msg}
-              delay={i * 200}
+              message={t.groupMessages[i]}
+              delay={i * 260}
               visible={isVisible}
             />
           ))}
         </div>
 
         <p className="text-muted-foreground text-sm text-center mt-8 font-sans-body italic leading-relaxed">
-          "What started as a simple introduction
-          <br />
-          turned into something special."
+          “{t.groupQuote}”
         </p>
       </div>
     </section>

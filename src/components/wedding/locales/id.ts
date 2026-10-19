@@ -1,0 +1,30 @@
+import type { InvitationCopy } from "./en";
+
+const id: InvitationCopy = {
+  language: "Bahasa undangan", open: "Buka undangan", now: "sekarang",
+  notification: "Ada pesan baru untukmu 💌", tap: "Ketuk untuk membuka undangan",
+  from: "Anthon & Melisa", details: "Detail acara", rsvp: "RSVP", scroll: "Gulir untuk mengikuti cerita kami",
+  heroIntro: "Saat dunia melambat di tahun 2020…", heroMessage: "sebuah pesan sederhana mengubah segalanya.", heroNote: "Berawal dari satu sapa.", weddingOf: "Pernikahan",
+  pandemicTitle: "Dunia Berubah", pandemicOne: "Pandemi membuat kita semua berjauhan.", pandemicTwo: "Namun, justru mempertemukan kami.",
+  groupEyebrow: "Awal Cerita", groupTitle: "Sebuah Grup LINE", groupChat: "Obrolan Grup LINE",
+  groupQuote: "Berawal dari perkenalan sederhana, tumbuh menjadi sesuatu yang istimewa.",
+  groupMessages: ["Hai semuanya 👋", "Halo!", "Selamat datang di grup! 🎉", "Senang kenalan dengan kalian!", "Semoga kita bisa makin kenal, ya 😊", "Aku juga! Senang bisa gabung"],
+  privateEyebrow: "Pesan Pribadi", privateTitle: "Percakapan Pertama", privateChat: "Obrolan Pribadi", privateQuote: "Kami pun semakin sering mengobrol…",
+  privateMessages: ["Hei! Seru ngobrol sama kamu di grup 😊", "Iya, aku juga senang! Kamu asyik", "Haha makasih! Kamu kerja di bidang apa?", "Aku di bidang teknologi. Kamu?", "Desain! Kita harus lebih sering ngobrol 🎨", "Boleh banget 😊"],
+  read: "Dibaca", typing: "Mengetik", photoSoon: "Foto segera hadir", photoOpen: "Buka foto", photoClose: "Tutup foto", photoPrevious: "Foto sebelumnya", photoNext: "Foto berikutnya", photoHint: "Geser untuk melihat kenangan kami", photoCount: "Foto {current} dari {total}",
+  meetingEyebrow: "Momen yang Mengubah Segalanya", meetingTitle: "Akhirnya Bertemu Langsung", meetingPhoto: "Pertemuan pertama", meetingCaption: "Dari layar, akhirnya bertatap muka ✨", meetingQuote: "Setelah berbulan-bulan bertukar pesan hingga larut malam, akhirnya kami bertemu langsung.",
+  journeyEyebrow: "Kisah Kami", journeyTitle: "Awal Pertemuan", journeyCaptions: ["Kencan pertama kami", "Petualangan bersama", "Merangkai kenangan", "Semakin dekat"], journeyQuote: "Obrolan di grup perlahan tumbuh menjadi kisah cinta kami.",
+  proposal: "Lamaran", proposalOne: "Dia melamar.", proposalTwo: "Jawabannya, iya.",
+  eventEyebrow: "Catat Tanggalnya", eventTitle: "Pemberkatan & Resepsi Pernikahan", ceremony: "Pemberkatan", reception: "Resepsi Pernikahan", map: "Buka Peta",
+  countdownEyebrow: "Menuju Hari Bahagia", countdownTitle: "Menuju Awal Selamanya", countdownArrived: "Kami menantikan kehadiran Anda di hari istimewa kami.", days: "Hari", hours: "Jam", minutes: "Menit", seconds: "Detik",
+  galleryEyebrow: "Kenangan", galleryTitle: "Galeri Kami", galleryPhoto: "Kenangan kami", prewed: "Pre-wedding",
+  rsvpEyebrow: "Kami Menantikan Kehadiranmu", replyTitle: "Balasanmu", thanks: "Terima kasih, {name}!",
+  name: "Nama Kamu", nameHint: "Masukkan nama kamu", email: "Alamat Email", attendance: "Apakah kamu akan hadir?", accept: "Dengan Senang Hati", decline: "Maaf, Belum Bisa Hadir", guests: "Jumlah Tamu", person: "Orang", people: "Orang", message: "Pesan untuk Kami", messageHint: "Tulis doa dan ucapanmu…", send: "Kirim RSVP",
+  rsvpInvalid: "Isi nama, email yang valid, dan jumlah tamu 1–5 orang.", rsvpSoon: "Pengiriman RSVP belum tersambung. Jawabanmu sudah siap — sebentar lagi bisa dikirim.",
+  giftEyebrow: "Daftar Hadiah", giftTitle: "Tanda Kasih", giftIntro: "Kehadiranmu sudah menjadi hadiah bagi kami. Jika ingin memberikan tanda kasih, berikut beberapa hal yang kami sukai.",
+  giftSend: "Kirim Tanda Kasih", giftClaiming: "Hadiah pilihanmu:", giftNameHint: "Nama kamu", giftEmailHint: "Untuk mengirim ucapan terima kasih kami", giftConfirm: "Pilih & Kirim Hadiah", giftReserved: "SUDAH DIPILIH", giftView: "Lihat hadiah", giftFields: "Silakan isi semua kolom", giftSoon: "Pemesanan hadiah belum tersambung. Sebentar lagi kami buka!", close: "Tutup",
+  digitalGift: "Angpao Digital", envelope: "Amplop Kasih", envelopeIntro: "Doa restumu sangat berarti bagi kami. Jika ingin berbagi tanda kasih secara digital, berikut detailnya.", copy: "Salin nomor rekening", copied: "Tersalin", copyError: "Nomor belum bisa disalin. Silakan salin secara manual.",
+  giftCategories: { "Featured Fund": "Dana Pilihan", Kitchen: "Dapur", Audio: "Audio", Beauty: "Perawatan", Home: "Rumah" }, honeymoon: "Bulan Madu di Paris", customAmount: "Bebas",
+  closingIntro: "Dari sebuah grup LINE…", closingOne: "Menuju Awal", closingTwo: "Selamanya", closingThanks: "Dengan cinta dan rasa syukur,", closingFooter: "Dibuat dengan ❤️ untuk hari istimewa kami",
+};
+export default id;

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-
-const WEDDING_DATE = new Date("2025-12-28T10:00:00");
+import { useInvitationLanguage } from "./InvitationLanguage";
+import { WEDDING_DATE } from "./weddingConfig";
 
 const CountdownSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { t, locale } = useInvitationLanguage();
   const [timeLeft, setTimeLeft] = useState(getTimeLeft());
 
   function getTimeLeft() {
@@ -19,30 +20,31 @@ const CountdownSection = () => {
   }
 
   useEffect(() => {
+    if (WEDDING_DATE.getTime() <= Date.now()) return;
     const timer = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, []);
 
   const units = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hours", value: timeLeft.hours },
-    { label: "Minutes", value: timeLeft.minutes },
-    { label: "Seconds", value: timeLeft.seconds },
+    { label: t.days, value: timeLeft.days },
+    { label: t.hours, value: timeLeft.hours },
+    { label: t.minutes, value: timeLeft.minutes },
+    { label: t.seconds, value: timeLeft.seconds },
   ];
 
   return (
     <section className="min-h-[60vh] flex items-center justify-center px-4 py-16 bg-secondary/30">
       <div ref={ref} className={`text-center scroll-fade-in ${isVisible ? "visible" : ""}`}>
         <p className="text-xs tracking-[0.4em] uppercase text-primary mb-4 font-sans-body">
-          Counting Down
+          {t.countdownEyebrow}
         </p>
-        <h2 className="text-2xl font-serif text-foreground mb-8">Until Forever Begins</h2>
+        <h2 className="text-2xl font-serif text-foreground mb-8">{WEDDING_DATE.getTime() <= Date.now() ? t.countdownArrived : t.countdownTitle}</h2>
 
-        <div className="flex gap-3 justify-center">
+        <div className="grid grid-cols-4 gap-2 justify-center">
           {units.map((u) => (
-            <div key={u.label} className="bg-card rounded-xl p-4 w-[72px] border border-border">
+            <div key={u.label} className="bg-card rounded-xl px-2 py-4 min-w-0 border border-border">
               <div className="text-2xl font-serif text-primary">
-                {u.value.toString().padStart(2, "0")}
+                {new Intl.NumberFormat(locale, { minimumIntegerDigits: 2, useGrouping: false }).format(u.value)}
               </div>
               <div className="text-[10px] text-muted-foreground mt-1 font-sans-body uppercase tracking-wider">
                 {u.label}
